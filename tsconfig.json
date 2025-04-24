@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "target": "ES2020", // Or ES2022/ESNext if you're using latest Node.js
+    "module": "CommonJS", // Node.js uses CommonJS
+    "moduleResolution": "node", // Mimics Node's module resolution
+    "outDir": "./dist", // Where compiled JS files go
+    "rootDir": "./src", // Where your source files live
+    "esModuleInterop": true, // Allows default imports from CommonJS modules
+    "forceConsistentCasingInFileNames": true, // Helps avoid case sensitivity issues
+    "strict": true, // Enable all strict type checks
+    "skipLibCheck": true // Speeds up compilation by skipping type checks on declaration files
+  },
+  "include": [
+    "src"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
+}
