@@ -67,7 +67,6 @@ npm run dev
   username: string,    // 3-20 chars, alphanumeric + underscore
   email: string,       // valid email
   password: string,    // min 6 chars
-  role: "Admin" | "User" (optional)
 }
 ```
 
