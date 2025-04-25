@@ -4,12 +4,13 @@ import {
 } from '../controllers/blogs.controller';
 import { userProtected } from '../middlewares/auth.middleware';
 const router = express.Router();
+import { upload } from '../utils';
 
 //Get All Blogs
 router.get('/', getAllBlogs);
 
 //Create a new Blog
-router.post('/', userProtected, createBlog);
+router.post('/', userProtected, upload.single('bannerImage'), createBlog);
 
 //Get a single Blog by slug
 router.get('/:slug', getBlogBySlug);

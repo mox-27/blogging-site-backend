@@ -17,7 +17,7 @@ export const loginInputSchema = z.object({
 export const blogInputSchema = z.object({
     title: z.string().min(1, "Title cannot be empty"),
     description: z.string().max(500).optional(),
-    content: z.array(z.string().min(1, "Content sections can't be empty")),
+    content: z.array(z.any()),
     bannerImage: z.string().url("Must be a valid URL").optional(),
     tags: z.array(z.string().min(1)).max(10).optional(),
 });

@@ -6,7 +6,8 @@ A RESTful API backend for a blogging platform built with Express.js, TypeScript,
 
 - JWT-based Authentication
 - Role-based Authorization (Admin/User)
-- Blog post management with content sections
+- Blog post management with rich content blocks
+- Image upload support (Cloudinary)
 - User management (Admin only)
 - Input validation using Zod schemas
 - TypeScript for type safety
@@ -15,6 +16,7 @@ A RESTful API backend for a blogging platform built with Express.js, TypeScript,
 
 - Node.js
 - npm or yarn
+- Cloudinary account
 
 ## Setup
 
@@ -32,6 +34,10 @@ npm install
 3. Create a `.env` file in the root directory:
 ```env
 PORT=3000
+CLOUD_NAME=your_cloudinary_cloud_name
+CLOUD_APIKEY=your_cloudinary_api_key
+CLOUD_SECRET=your_cloudinary_api_secret
+JWT_SECRET=your_jwt_secret
 ```
 
 4. Start the development server:
@@ -83,11 +89,50 @@ npm run dev
 {
   title: string,       // non-empty
   description?: string, // max 500 chars
-  content: string[],   // array of non-empty strings (Can be Rich text)
-  bannerImage?: string, // valid URL
+  content: Array<{
+    type: 'text' | 'image' | 'heading' | 'quote',
+    content: string,
+    src?: string,     // required for image type
+    level?: number    // required for heading type (1-6)
+  }>,
+  bannerImage?: string, // valid URL or file upload
   tags?: string[]      // up to 10 tags
 }
 ```
+
+### Content Block Examples
+```json
+{
+  "content": [
+    {
+      "type": "heading",
+      "content": "Introduction",
+      "level": 1
+    },
+    {
+      "type": "text",
+      "content": "This is a paragraph..."
+    },
+    {
+      "type": "image",
+      "content": "Image caption",
+      "src": "https://example.com/image.jpg"
+    },
+    {
+      "type": "quote",
+      "content": "This is a quote"
+    }
+  ]
+}
+```
+
+## Image Upload
+
+The API supports two ways to upload images:
+1. Direct file upload using multipart/form-data
+2. URL-based upload where the API will fetch and store the image
+
+Images are stored on Cloudinary and the API returns secure URLs.
 
 ## Authorization
 
@@ -101,14 +146,19 @@ The API uses a two-level authorization system:
 - TypeScript
 - Zod (Input validation)
 - MongoDB (mongoose)
+- Cloudinary (Image hosting)
+- JWT (Authentication)
 
 ## Project Structure
 
 ```
 src/
-├── controllers/     # Route controllers
-├── middlewares/    # Auth middlewares
-├── routes/         # API routes
-├── zod.types.ts    # Input validation schemas
-└── index.ts        # Application entry point
+├── config/        # Configuration files
+├── controllers/   # Route controllers
+├── middlewares/   # Auth middlewares
+├── models/        # MongoDB models
+├── routes/        # API routes
+├── utils/         # Helper functions
+├── zod.types.ts   # Input validation schemas
+└── index.ts       # Application entry point
 ```
